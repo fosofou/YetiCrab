@@ -1,0 +1,5 @@
+{
+    "port": 5000,
+    "mongoUri": "mongodb+srv://Juk:ShadowDaggers@cluster0.uruvu.mongodb.net/app?retryWrites=true&w=majority",
+    "jwtSecret": "Juk"
+}
