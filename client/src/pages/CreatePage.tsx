@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useHttp } from "../hooks/http.hook";
 import { ITransportForm } from "../intarfece";
-import { Link, NavLink} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 
 
 export const CreatePage = () =>{
@@ -20,11 +20,11 @@ export const CreatePage = () =>{
             Authorization: `Bearer ${auth.token}`
         })); 
         setTransportData(response)
-    }, [])
+    }, [auth.token,request])
 
     const deleteTransport = async (id:string) =>{
         try{
-            const response = await request(`/api/transport/${id}/delete`, 'POST', null, {
+            await request(`/api/transport/${id}/delete`, 'POST', null, {
                 Authorization: `Bearer ${auth.token}`
             });
             loadTransportsList();
@@ -49,7 +49,7 @@ export const CreatePage = () =>{
             <td>{transport.company}</td>
             <td> {transport.telephone}</td>
             <td> {transport.comment}</td>
-            <td> <a target = '_blank' href = {atiHref}>Открыть</a></td>
+            <td> <a target = '_blank' rel="noreferrer" href = {atiHref}>Открыть</a></td>
             <td><i className="material-icons icon" onClick = {() => deleteTransport(transport.id)}>delete</i></td>
             <td><NavLink to = {`/transport-detail/${transport.id}`}><i className = 'material-icons icon' >edit</i></NavLink></td>
             </tr>
@@ -58,11 +58,10 @@ export const CreatePage = () =>{
     return (
        
         <div className = 'mt-5'>
-        <h2>Таблица с заявками</h2>
         <div>
-            <h5 className="left-align">Фильтры</h5>
+        <h2 className ='center-align'> Таблица с заявками</h2>
         </div>
-        <table className = 'centered striped left-align'>
+        <table className = 'centered striped'>
             <thead>
           <tr className = 'px2'>
               <th>Номер заявки</th>
@@ -73,14 +72,14 @@ export const CreatePage = () =>{
               <th>Телефон перевозчика</th>
               <th>Комментарий</th>
               <th>Ссылка на ATI</th>
-              <th></th>
+              <th>Удалить</th>
+              <th>Изменить</th>
           </tr>
             </thead>
             <tbody>
                 {render}            
             </tbody>
         </table>
-        
         </div>
     )
    

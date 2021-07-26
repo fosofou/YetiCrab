@@ -51,7 +51,6 @@ export const DetailPage = () =>{
 
     useEffect(() =>{
         findTransport();
-        
     }, [])
 
 
@@ -61,12 +60,13 @@ export const DetailPage = () =>{
 
     const onSubmit = async (event:React.MouseEvent) =>{
         try{
-
+           
             const data = await request(`/api/transport/${id}/update`, 'POST', {...form},{
                 Authorization:`Bearer ${auth.token}`
             });
-            console.log(data);
-            history.push('/')
+
+            history.push('/');
+            
 
         } catch (e) {
 

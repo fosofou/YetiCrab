@@ -1,6 +1,9 @@
 import {useState, useCallback} from 'react'
+import { useMessage } from './message.hook'
+
 
 export const useHttp = () => {
+  const message = useMessage();
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
 

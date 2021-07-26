@@ -9,7 +9,10 @@ router.post('/generate',
   check('id').notEmpty(),
   check('date').notEmpty(),
   check('name_carrier').notEmpty(),
-  check('telephone').notEmpty()
+  check('telephone').notEmpty(),
+  check('company').notEmpty(),
+  check('time').notEmpty(),
+  check('ati').notEmpty()
 ],auth, async(req, res) =>{
     try{
 
@@ -90,11 +93,11 @@ router.post('/:id/update',
 [
   check('id').notEmpty(),
   check('date').notEmpty(),
-  check('company').notEmpty(),
-  check('time').notEmpty,
-  check('ati').notEmpty(),
   check('name_carrier').notEmpty(),
-  check('telephone').notEmpty()
+  check('telephone').notEmpty(),
+  check('company').notEmpty(),
+  check('time').notEmpty(),
+  check('ati').notEmpty()
 ], auth, async(req,res) =>{ 
   try{
 
@@ -111,7 +114,7 @@ router.post('/:id/update',
 
       const list = await List.findOne({id});
 
-        if (list){
+        if (list && list.id!==id){
           console.log(list)
           return res.status(400).json({message:"Заявка с таким номеров уже существует"}) 
         }
@@ -126,7 +129,8 @@ router.post('/:id/update',
         comment:comment,
         ati:ati
       }})
-
+      
+      console.log(result)
       res.json(result);
 
   } catch (e) {
