@@ -1,9 +1,9 @@
 const express = require('express');
-const config = require('config');
+const cfg = require('config')
 const mongoose = require('mongoose')
 
 const app = express()
-const PORT = config.get('port')||5000
+const PORT = cfg.get('port')||5000
 
 
 
@@ -13,8 +13,9 @@ app.use('/api/transport', require('./routes/transport.routes'));
 
 async function start() {
     try{
+        console.log(cfg.get('jwtSecret'));
         app.listen(PORT, () => console.log(`App has been started on port ${PORT}...`));
-        await mongoose.connect(config.get('mongoUri'), {
+        await mongoose.connect(cfg.get('mongoUri'), {
             useNewUrlParser: true,
             useUnifiedTopology: true,
             useCreateIndex: true,

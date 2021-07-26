@@ -1,10 +1,6 @@
-import {useState, useCallback, useContext} from 'react'
-import { useHistory } from 'react-router-dom'
-import { AuthContext } from '../context/AuthContext'
-import { useMessage } from './message.hook'
+import {useState, useCallback} from 'react'
 
 export const useHttp = () => {
-
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
 
@@ -13,14 +9,14 @@ export const useHttp = () => {
     try {
       if (body) {
         body = JSON.stringify(body)
-        headers['Content-Type'] = 'application/json';
+        headers['Content-Type'] = 'application/json'
       }
 
       const response = await fetch(url, {method, body, headers})
       const data = await response.json()
 
       if (!response.ok) {
-         throw new Error(data.message||"Вы не авторизованы")
+        throw new Error(data.message || 'Что-то пошло не так')
       }
 
       setLoading(false)

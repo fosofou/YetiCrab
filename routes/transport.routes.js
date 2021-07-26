@@ -22,7 +22,7 @@ router.post('/generate',
           })
         }
 
-        const {id,date, name_carrier, telephone, comment} = req.body;
+        const {id,date, time,company,name_carrier, telephone, comment,ati} = req.body;
    
         
 
@@ -40,7 +40,7 @@ router.post('/generate',
 
 
         const transportList = new List({
-            id,date,name_carrier,telephone,comment,
+            id,date,time,company,name_carrier,telephone,comment,ati,
             owner: req.user.userId
         })
 
@@ -86,16 +86,45 @@ router.post('/:id/delete',auth, async(req,res) => {
   }
 })
 
-router.post('/:id/update', auth, async(req,res) =>{ 
+router.post('/:id/update',
+[
+  check('id').notEmpty(),
+  check('date').notEmpty(),
+  check('company').notEmpty(),
+  check('time').notEmpty,
+  check('ati').notEmpty(),
+  check('name_carrier').notEmpty(),
+  check('telephone').notEmpty()
+], auth, async(req,res) =>{ 
   try{
 
-      const {id,date, name_carrier, telephone, comment} = req.body;
+      const errors = validationResult(req)
+
+        if (!errors.isEmpty()) {
+          return res.status(400).json({
+            errors: errors.array(),
+            message: 'Заполните обязательные поля с поменткой *'
+          })
+        }
+
+      const {id, date, time, company, name_carrier, telephone, comment, ati} = req.body;
+
+      const list = await List.findOne({id});
+
+        if (list){
+          console.log(list)
+          return res.status(400).json({message:"Заявка с таким номеров уже существует"}) 
+        }
+
       const result = await List.findOneAndUpdate({id:req.params.id}, {$set:{
         id:id,
         date:date,
+        time:time,
+        company:company,
         name_carrier:name_carrier,
         telephone:telephone,
-        comment:comment
+        comment:comment,
+        ati:ati
       }})
 
       res.json(result);

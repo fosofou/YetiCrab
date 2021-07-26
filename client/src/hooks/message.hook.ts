@@ -1,12 +1,9 @@
-import React, { useCallback } from "react";
-import M from "materialize-css";
+import {useCallback} from 'react'
 
-
-export const useMessage = () =>{
-    return useCallback((text) => { 
-
-        if (window.M && text){
-            window.M.toast({html:text});
-        }
-    }, [])
+export const useMessage = () => {
+  return useCallback(text => {
+    if (window.M && text) {
+      window.M.toast({ html: text })
+    }
+  }, [])
 }

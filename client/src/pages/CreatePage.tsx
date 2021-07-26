@@ -6,14 +6,13 @@ import { useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useHttp } from "../hooks/http.hook";
 import { ITransportForm } from "../intarfece";
-import { NavLink} from "react-router-dom";
+import { Link, NavLink} from "react-router-dom";
 
 
 export const CreatePage = () =>{
     const {request} = useHttp()
     const auth = useContext(AuthContext);
     const [transportData, setTransportData] = useState<ITransportForm[]>([]);
-
 
     const loadTransportsList = useCallback(async () =>{
         
@@ -40,13 +39,17 @@ export const CreatePage = () =>{
 
 
     const render = transportData.map(transport =>{
+        const atiHref = `https://ati.su/firms/${transport.ati}/info`
         return (
             <tr key = {transport.id}>
             <td>{transport.id}</td>
             <td> {transport.date}</td>
+            <td>{transport.time}</td>
             <td> {transport.name_carrier}</td>
+            <td>{transport.company}</td>
             <td> {transport.telephone}</td>
             <td> {transport.comment}</td>
+            <td> <a target = '_blank' href = {atiHref}>Открыть</a></td>
             <td><i className="material-icons icon" onClick = {() => deleteTransport(transport.id)}>delete</i></td>
             <td><NavLink to = {`/transport-detail/${transport.id}`}><i className = 'material-icons icon' >edit</i></NavLink></td>
             </tr>
@@ -56,15 +59,20 @@ export const CreatePage = () =>{
        
         <div className = 'mt-5'>
         <h2>Таблица с заявками</h2>
-        <h3>Фильтры</h3>
-        <table className = 'centered striped'>
+        <div>
+            <h5 className="left-align">Фильтры</h5>
+        </div>
+        <table className = 'centered striped left-align'>
             <thead>
-          <tr>
+          <tr className = 'px2'>
               <th>Номер заявки</th>
               <th>Дата получения</th>
-              <th>Фирма клиента</th>
+              <th>Время получения</th>
+              <th>ФИО перевозчика</th>
+              <th>Компания перевозчика</th>
               <th>Телефон перевозчика</th>
               <th>Комментарий</th>
+              <th>Ссылка на ATI</th>
               <th></th>
           </tr>
             </thead>

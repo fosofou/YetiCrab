@@ -24,6 +24,7 @@ router.post(
         message: 'Некорректный данные при регистрации'
       })
     }
+
     const {email, password} = req.body
 
     const candidate = await User.findOne({ email })
@@ -31,14 +32,13 @@ router.post(
     if (candidate) {
       return res.status(400).json({ message: 'Такой пользователь уже существует' })
     }
-   
-    const user = new User({ email, password: password })
 
-    res.status(201).json({ message: 'Пользователь создан' })
-    
+
+    const user = new User({ email, password })
+
     await user.save()
 
-    
+    res.status(201).json({ message: 'Пользователь создан' })
 
   } catch (e) {
     res.status(500).json({ message: 'Что-то пошло не так, попробуйте снова' })
@@ -62,7 +62,7 @@ router.post(
         message: 'Некорректный данные при входе в систему'
       })
     }
-    
+
     const {email, password} = req.body
 
     const user = await User.findOne({ email })
@@ -71,7 +71,7 @@ router.post(
       return res.status(400).json({ message: 'Пользователь не найден' })
     }
 
-    const isMatch = password === user.password;
+    const isMatch = user.password === password;
 
     if (!isMatch) {
       return res.status(400).json({ message: 'Неверный пароль, попробуйте снова' })
@@ -86,7 +86,7 @@ router.post(
     res.json({ token, userId: user.id })
 
   } catch (e) {
-    return res.status(500).json({ message: 'Что-то пошло не так, попробуйте снова' })
+    res.status(500).json({ message: 'Что-то пошло не так, попробуйте снова' })
   }
 })
 
